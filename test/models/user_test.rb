@@ -3,7 +3,8 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   
   def setup
-    @user = User.new(name: "Example User", email: "user@example.com")
+    @user = User.new(name: "Example User", email: "user@example.com",
+                      password: "foobar", password_confirmation: "foobar")
   end
   
   test "should be valid" do
@@ -29,4 +30,44 @@ class UserTest < ActiveSupport::TestCase
     @user.email = "a" * 244 + "@example.com"
     assert_not @user.valid?
   end
+  
+  test "email validation should accept valid emails" do
+    valid_addresses = %w[user@example.com USER@foo.com A_US-ER@foo.bar.org 
+                        first.last@foo.jp alice+bob@baz.cn]
+    valid_addresses.each do |v_email|
+      @user.email = v_email
+      assert @user.valid?, "#{v_email.inspect} should be valid"
+    end
+  end
+  
+  test "email validation shold reject invalid emails" do
+    invalid_e = %w[user@some,com wordgirl user.foo.com user.name@example. 
+                  foo@bar_baz.com foo@bar+baz.com]
+    invalid_e.each do |bad|
+      @user.email = bad
+      assert_not @user.valid?, "#{invalid_e} should be invalid"
+    end
+  end
+  
+  test "email addresses should be unique" do
+    duplicate_user = @user.dup
+    duplicate_user.email = @user.email.upcase
+    @user.save
+    assert_not duplicate_user.valid?
+  end
+  
+  
+  
+  
+  test "password should be present (nonblank)" do
+    @user.password = @user.password_confirmation = " " * 6
+    assert_not @user.valid?
+  end
+
+  test "password should have a minimum length" do
+    @user.password = @user.password_confirmation = "a" * 5
+    assert_not @user.valid?
+  end
+  
+  
 end
