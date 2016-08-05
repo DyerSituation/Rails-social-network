@@ -3,15 +3,15 @@ Rails.application.routes.draw do
 
   get 'users/new'
 
-  root             'static_pages#home'
-  get    'help'    => 'static_pages#help'
-  get    'about'   => 'static_pages#about'
-  get    'contact' => 'static_pages#contact'
+  root             'users#home'
+  get    'help'    => 'users#help'
+  get    'about'   => 'users#about'
+  get    'contact' => 'users#contact'
   get    'signup'  => 'users#new'
-  get    'login'   => 'sessions#new'
+  get    'login'   => 'users#login_page'
   get    'post'   => 'posts#new'
-  post   'login'   => 'sessions#create'
-  delete 'logout'  => 'sessions#destroy'
+  post   'login'   => 'users#login'
+  delete 'logout'  => 'users#logout'
   resources :posts
   resources :users
   

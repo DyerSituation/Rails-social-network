@@ -12,18 +12,21 @@
     </section>
   </aside>
 </div>
-
-<div id="firstpanel" class="panel panel-default">
+<%
+messages = ['Basic panel example 1']
+%>
+<% messages.each_with_index do |message, index| %>
+ <div id=firstpanel class="panel panel-default">
   <div class="panel-body">
-    
+    <span class='score' id='score-<%= index %>'>0</span>
     <div class="btn-group-vertical" role="group" aria-label="...">
-  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
-  <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+  <button type="button" class="btn btn-default upvote" data-index="<%= index %>" ><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+  <button type="button" class="btn btn-default vote" data-index="<%= index %>" ><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
 </div>
-
-
-    Basic panel examples
+    <%= message %>
   </div>
 </div>
 
+
 <button type="button" id="newpost" class="btn btn-outline-primary">New Post</button>
+<% end %>
