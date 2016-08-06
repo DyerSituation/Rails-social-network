@@ -1,7 +1,7 @@
-window.onload = function(){ 
+$(document).ready(function(){ 
    
     console.log("start")
-    postCount = 1
+    postCount = 0
     $("#newpost").click(function(){
     console.log("click!ee")
 });
@@ -15,28 +15,39 @@ function bindUpVote(){
     score += 1;
             console.log(score);
     $("#score-"+index).text(score);
-    debugger
-    
+}
+
+function bindDownVote(){
+    console.log("click! vote");
+    index = $(this).attr('data-index');
+    score = parseInt($("#score-"+index).text());
+        console.log(score);
+    score -= 1;
+            console.log(score);
+    $("#score-"+index).text(score);
 }
 
 $(".upvote").click(bindUpVote);
+$(".downvote").click(bindDownVote);
 
 
 $("#newpost").click(function(){
     postCount+=1;
-    count_string = postCount.toString()
-    longstring = ` <div id=firstpanel class="panel panel-default">
+    longstring = ` <div id="panel-`+postCount+`" class="panel panel-default">
   <div class="panel-body">
-    <span class='score' id='score-`+count_string+`'>0</span>
+    <span class='score' id='score-`+postCount+`'>0</span>
     <div class="btn-group-vertical" role="group" aria-label="...">
-  <button type="button" class="btn btn-default upvote" data-index="`+count_string+`"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
-  <button type="button" class="btn btn-default vote" data-index="`+count_string+`"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+  <button type="button" class="btn btn-default upvote" data-index="`+postCount+`"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+  <button type="button" class="btn btn-default downvote" data-index="`+postCount+`"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
 </div>
     Test post
   </div>
 </div>`;
-    $(longstring).insertAfter("#firstpanel").find(".upvote").click(bindUpVote);
+    newdiv = $(longstring).insertAfter("#panel-"+(postCount-1))
+    debugger
+    newdiv.find(".upvote").click(bindUpVote);
+    newdiv.find(".downvote").click(bindDownVote);
     
     console.log(longstring)
 });
-};  
+});  
